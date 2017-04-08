@@ -1,5 +1,5 @@
-hash: 44f02b562cb41dc64dc2525beaac458e64b9f44da481476ff5db3dc0a3680f38
-updated: 2017-04-08T13:52:40.368328568+08:00
+hash: a393abd035bf64290fee40d5db428cf3e62b65277cc958dff6cbf9f13df1d873
+updated: 2017-04-08T21:17:39.77452312+08:00
 imports:
 - name: github.com/davecgh/go-spew
   version: 346938d642f2ec3594ed81d874461961cd0faa76
@@ -16,7 +16,8 @@ imports:
   subpackages:
   - assert
 - name: golang.org/x/sys
-  version: d9157a9621b69ad1d8d77a1933590c416593f24f
+  version: f3918c30c5c2cb527c0b071a27c35120a6c0719a
+  repo: git@github.com:golang/sys.git
   subpackages:
   - unix
 - name: gopkg.in/yaml.v2
