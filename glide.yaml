@@ -1,4 +1,4 @@
-package: go-utils
+package: github.com/pengsrc/go-utils
 import:
 # Test
 - package: github.com/stretchr/testify
