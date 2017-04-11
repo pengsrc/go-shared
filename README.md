@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/pengsrc/go-shared)](https://goreportcard.com/report/github.com/pengsrc/go-shared)
 [![License](http://img.shields.io/badge/license-apache%20v2-blue.svg)](https://github.com/yunify/qingstor-sdk-go/blob/master/LICENSE)
 
-Useful utilities for the Go programming language.
+Useful packages for the Go programming language.
 
 ## Contributing
 
