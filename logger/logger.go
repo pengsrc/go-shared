@@ -122,35 +122,61 @@ func (l *Logger) Flush() {
 }
 
 // Debug logs a message with severity DEBUG.
-func (l *Logger) Debug(format string, v ...interface{}) {
+func (l *Logger) Debug(message string) {
+	l.output(l.origLogger.Debug, message)
+}
+
+// DebugF logs a message with severity DEBUG in format.
+func (l *Logger) DebugF(format string, v ...interface{}) {
 	l.output(l.origLogger.Debug, format, v...)
 }
 
 // Info logs a message with severity INFO.
-func (l *Logger) Info(format string, v ...interface{}) {
+func (l *Logger) Info(message string) {
+	l.output(l.origLogger.Info, message)
+}
+
+// InfoF logs a message with severity INFO in format.
+func (l *Logger) InfoF(format string, v ...interface{}) {
 	l.output(l.origLogger.Info, format, v...)
 }
 
 // Warn logs a message with severity WARN.
-func (l *Logger) Warn(format string, v ...interface{}) {
+func (l *Logger) Warn(message string) {
+	l.output(l.origLogger.Warn, message)
+}
+
+// WarnF logs a message with severity WARN in format.
+func (l *Logger) WarnF(format string, v ...interface{}) {
 	l.output(l.origLogger.Warn, format, v...)
 }
 
 // Error logs a message with severity ERROR.
-func (l *Logger) Error(format string, v ...interface{}) {
+func (l *Logger) Error(message string) {
+	l.output(l.origLogger.Error, message)
+}
+
+// ErrorF logs a message with severity ERROR in format.
+func (l *Logger) ErrorF(format string, v ...interface{}) {
 	l.output(l.origLogger.Error, format, v...)
 }
 
 // Fatal logs a message with severity ERROR followed by a call to os.Exit().
-func (l *Logger) Fatal(format string, v ...interface{}) {
+func (l *Logger) Fatal(message string) {
+	l.output(l.origLogger.Fatal, message)
+}
+
+// FatalF logs a message with severity ERROR in format followed by a call to
+// os.Exit().
+func (l *Logger) FatalF(format string, v ...interface{}) {
 	l.output(l.origLogger.Fatal, format, v...)
 }
 
-func (l *Logger) output(origin func(...interface{}), format string, v ...interface{}) {
+func (l *Logger) output(origin func(...interface{}), formatOrMessage string, v ...interface{}) {
 	if len(v) > 0 {
-		origin(fmt.Sprintf(format, v...))
+		origin(fmt.Sprintf(formatOrMessage, v...))
 	} else {
-		origin(format)
+		origin(formatOrMessage)
 	}
 }
 
