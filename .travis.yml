@@ -3,7 +3,6 @@ go:
   - 1.8
   - 1.7
   - 1.6
-  - 1.5
 
 cache:
   directories:
@@ -26,6 +25,10 @@ before_install:
   - popd
   - /usr/local/bin/make --version
   - /usr/local/bin/glide --version
+
+install:
+  - go get -u github.com/golang/lint/golint
+  - glide install
 
 script:
   - /usr/local/bin/make check
