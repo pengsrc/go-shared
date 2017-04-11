@@ -1,10 +1,12 @@
-hash: 1479d473a82e600c9813b59c639f7609a098d49a287f8afc26c0b9eb8b62a878
-updated: 2017-04-11T13:59:50.796816626+08:00
+hash: d9fb8784d4c53a209ba12b5be1dc51d43b925ff53a06b5df850a9f7afa5e3e08
+updated: 2017-04-11T15:44:30.513321945+08:00
 imports:
 - name: github.com/davecgh/go-spew
   version: 346938d642f2ec3594ed81d874461961cd0faa76
   subpackages:
   - spew
+- name: github.com/Jeffail/gabs
+  version: 2a3aa15961d5fee6047b8151b67ac2f08ba2c48c
 - name: github.com/pmezard/go-difflib
   version: 792786c7400a136282c1664665ae0a8db921c6c2
   subpackages:
