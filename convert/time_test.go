@@ -61,10 +61,6 @@ func TestStringToUnixString(t *testing.T) {
 	assert.Equal(t, int64(1472715000), StringToUnixTimestamp("01/Sep/2016:07:30:00 +0000", NGINXTime))
 }
 
-func TestNowUnixTimestamp(t *testing.T) {
-	assert.Equal(t, NowTimestamp(), time.Now().Unix())
-}
-
 func TestTimeToUnixInt(t *testing.T) {
 	tz, err := time.LoadLocation("Asia/Shanghai")
 	assert.NoError(t, err)

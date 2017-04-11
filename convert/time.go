@@ -54,8 +54,3 @@ func StringToUnixTimestamp(timeString string, format string) int64 {
 	}
 	return t.Unix()
 }
-
-// NowTimestamp returns the unix timestamp for now.
-func NowTimestamp() int64 {
-	return time.Now().Unix()
-}
