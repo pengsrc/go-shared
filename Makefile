@@ -1,13 +1,13 @@
 SHELL := /bin/bash
 
-PACKAGE_NAME="github.com/pengsrc/go-utils"
+PACKAGE_NAME="github.com/pengsrc/go-shared"
 
 DIRS_TO_CHECK=$(shell ls -d */ | grep -v "vendor")
 PKGS_TO_CHECK=$(shell go list ./... | grep -vE "/vendor")
 
 ifneq (${PKG},)
 	DIRS_TO_CHECK="./${PKG}"
-	PKGS_TO_CHECK="github.com/pengsrc/go-utils/${PKG}"
+	PKGS_TO_CHECK="${PACKAGE_NAME}/${PKG}"
 endif
 
 .PHONY: help

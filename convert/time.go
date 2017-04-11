@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/pengsrc/go-utils/check"
+	"github.com/pengsrc/go-shared/check"
 )
 
 // Supported time layouts

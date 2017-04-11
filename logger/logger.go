@@ -14,8 +14,8 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	"github.com/pengsrc/go-utils/convert"
-	"github.com/pengsrc/go-utils/reopen"
+	"github.com/pengsrc/go-shared/convert"
+	"github.com/pengsrc/go-shared/reopen"
 )
 
 // LogFormatter is used to format log entry.
