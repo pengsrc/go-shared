@@ -126,19 +126,9 @@ func (l *Logger) Debug(message string) {
 	l.output(l.origLogger.Debug, message)
 }
 
-// DebugF logs a message with severity DEBUG in format.
-func (l *Logger) DebugF(format string, v ...interface{}) {
-	l.output(l.origLogger.Debug, format, v...)
-}
-
 // Info logs a message with severity INFO.
 func (l *Logger) Info(message string) {
 	l.output(l.origLogger.Info, message)
-}
-
-// InfoF logs a message with severity INFO in format.
-func (l *Logger) InfoF(format string, v ...interface{}) {
-	l.output(l.origLogger.Info, format, v...)
 }
 
 // Warn logs a message with severity WARN.
@@ -146,19 +136,9 @@ func (l *Logger) Warn(message string) {
 	l.output(l.origLogger.Warn, message)
 }
 
-// WarnF logs a message with severity WARN in format.
-func (l *Logger) WarnF(format string, v ...interface{}) {
-	l.output(l.origLogger.Warn, format, v...)
-}
-
 // Error logs a message with severity ERROR.
 func (l *Logger) Error(message string) {
 	l.output(l.origLogger.Error, message)
-}
-
-// ErrorF logs a message with severity ERROR in format.
-func (l *Logger) ErrorF(format string, v ...interface{}) {
-	l.output(l.origLogger.Error, format, v...)
 }
 
 // Fatal logs a message with severity ERROR followed by a call to os.Exit().
@@ -166,9 +146,29 @@ func (l *Logger) Fatal(message string) {
 	l.output(l.origLogger.Fatal, message)
 }
 
-// FatalF logs a message with severity ERROR in format followed by a call to
+// Debugf logs a message with severity DEBUG in format.
+func (l *Logger) Debugf(format string, v ...interface{}) {
+	l.output(l.origLogger.Debug, format, v...)
+}
+
+// Infof logs a message with severity INFO in format.
+func (l *Logger) Infof(format string, v ...interface{}) {
+	l.output(l.origLogger.Info, format, v...)
+}
+
+// Warnf logs a message with severity WARN in format.
+func (l *Logger) Warnf(format string, v ...interface{}) {
+	l.output(l.origLogger.Warn, format, v...)
+}
+
+// Errorf logs a message with severity ERROR in format.
+func (l *Logger) Errorf(format string, v ...interface{}) {
+	l.output(l.origLogger.Error, format, v...)
+}
+
+// Fatalf logs a message with severity ERROR in format followed by a call to
 // os.Exit().
-func (l *Logger) FatalF(format string, v ...interface{}) {
+func (l *Logger) Fatalf(format string, v ...interface{}) {
 	l.output(l.origLogger.Fatal, format, v...)
 }
 

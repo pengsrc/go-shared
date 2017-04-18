@@ -103,8 +103,8 @@ func TestTerminalLogger(t *testing.T) {
 	l.Warn("terminal - warn")
 	l.Error("terminal - error")
 
-	l.DebugF("terminal - debug - %d", time.Now().Unix())
-	l.InfoF("terminal - info - %d", time.Now().Unix())
-	l.WarnF("terminal - warn - %d", time.Now().Unix())
-	l.ErrorF("terminal - error - %d", time.Now().Unix())
+	l.Debugf("terminal - debug - %d", time.Now().Unix())
+	l.Infof("terminal - info - %d", time.Now().Unix())
+	l.Warnf("terminal - warn - %d", time.Now().Unix())
+	l.Errorf("terminal - error - %d", time.Now().Unix())
 }
