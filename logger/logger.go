@@ -91,8 +91,11 @@ func NewErrorHook(out io.Writer) *ErrorHook {
 type Logger struct {
 	origLogger *log.Logger
 
-	out         io.Writer
-	bufferedOut Flusher
+	out    io.Writer
+	errOut io.Writer
+
+	bufferedOut    Flusher
+	bufferedErrOut Flusher
 }
 
 // Flusher defines a interface with Flush() method.
@@ -118,6 +121,9 @@ func (l *Logger) SetLevel(level string) {
 func (l *Logger) Flush() {
 	if l.bufferedOut != nil {
 		l.bufferedOut.Flush()
+	}
+	if l.bufferedErrOut != nil {
+		l.bufferedErrOut.Flush()
 	}
 }
 
@@ -188,18 +194,32 @@ func CheckLevel(level string) error {
 	return nil
 }
 
-// NewFileLogger creates a logger that write into files.
+// NewFileLogger creates a logger that write into file.
 func NewFileLogger(filePath string, level ...string) (*Logger, error) {
-	dir := path.Dir(filePath)
-	if info, err := os.Stat(dir); err != nil {
-		return nil, fmt.Errorf(`directory not exists: %s`, dir)
-	} else if !info.IsDir() {
-		return nil, fmt.Errorf(`path is not directory: %s`, dir)
+	return NewFileLoggerWithErr(filePath, "", level...)
+}
+
+// NewFileLoggerWithErr creates a logger that write into files.
+func NewFileLoggerWithErr(filePath, errFilePath string, level ...string) (*Logger, error) {
+	if err := checkDir(path.Dir(filePath)); err != nil {
+		return nil, err
+	}
+	if errFilePath != "" {
+		if err := checkDir(path.Dir(errFilePath)); err != nil {
+			return nil, err
+		}
 	}
 
 	out, err := reopen.NewFileWriter(filePath)
 	if err != nil {
 		return nil, err
+	}
+	var errOut *reopen.FileWriter
+	if errFilePath != "" {
+		errOut, err = reopen.NewFileWriter(errFilePath)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	c := make(chan os.Signal)
@@ -208,29 +228,53 @@ func NewFileLogger(filePath string, level ...string) (*Logger, error) {
 			select {
 			case <-c:
 				out.Reopen()
+				if errOut != nil {
+					errOut.Reopen()
+				}
 			}
 		}
 	}()
 	signal.Notify(c, syscall.SIGHUP)
 
-	return NewLogger(out, level...)
+	if errOut == nil {
+		return NewLoggerWithErr(out, nil, level...)
+	}
+	return NewLoggerWithErr(out, errOut, level...)
 }
 
-// NewBufferedFileLogger creates a logger that write into files with buffer.
+// NewBufferedFileLogger creates a logger that write into file with buffer.
 func NewBufferedFileLogger(filePath string, level ...string) (*Logger, error) {
-	dir := path.Dir(filePath)
-	if info, err := os.Stat(dir); err != nil {
-		return nil, fmt.Errorf(`directory not exists: %s`, dir)
-	} else if !info.IsDir() {
-		return nil, fmt.Errorf(`path is not directory: %s`, dir)
+	return NewBufferedFileLoggerWithErr(filePath, "", level...)
+}
+
+// NewBufferedFileLoggerWithErr creates a logger that write into files with buffer.
+func NewBufferedFileLoggerWithErr(filePath, errFilePath string, level ...string) (*Logger, error) {
+	if err := checkDir(path.Dir(filePath)); err != nil {
+		return nil, err
+	}
+	if errFilePath != "" {
+		if err := checkDir(path.Dir(errFilePath)); err != nil {
+			return nil, err
+		}
 	}
 
 	out, err := reopen.NewFileWriter(filePath)
 	if err != nil {
 		return nil, err
 	}
+	var errOut *reopen.FileWriter
+	if errFilePath != "" {
+		errOut, err = reopen.NewFileWriter(errFilePath)
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	bufferedOut := reopen.NewBufferedFileWriter(out)
+	var bufferedErrOut *reopen.BufferedFileWriter
+	if errOut != nil {
+		bufferedErrOut = reopen.NewBufferedFileWriter(errOut)
+	}
 
 	c := make(chan os.Signal)
 	go func() {
@@ -238,21 +282,23 @@ func NewBufferedFileLogger(filePath string, level ...string) (*Logger, error) {
 			select {
 			case <-c:
 				bufferedOut.Reopen()
+				if bufferedErrOut != nil {
+					bufferedErrOut.Reopen()
+				}
 			case <-time.After(10 * time.Second):
 				bufferedOut.Flush()
+				if bufferedErrOut != nil {
+					bufferedErrOut.Flush()
+				}
 			}
 		}
 	}()
 	signal.Notify(c, syscall.SIGHUP)
 
-	l, err := NewLogger(bufferedOut, level...)
-	if err != nil {
-		return nil, err
+	if bufferedErrOut == nil {
+		return NewLoggerWithErr(bufferedOut, nil, level...)
 	}
-
-	l.bufferedOut = bufferedOut
-
-	return l, nil
+	return NewLoggerWithErr(bufferedOut, bufferedErrOut, level...)
 }
 
 // NewTerminalLogger creates a logger that write into terminal.
@@ -260,9 +306,20 @@ func NewTerminalLogger(level ...string) (*Logger, error) {
 	return NewLogger(os.Stdout, level...)
 }
 
+// NewTerminalLoggerWithErr creates a logger that write into terminal.
+func NewTerminalLoggerWithErr(level ...string) (*Logger, error) {
+	return NewLoggerWithErr(os.Stdout, os.Stderr, level...)
+}
+
 // NewLogger creates a new logger for given out and level, and the level is
 // optional.
 func NewLogger(out io.Writer, level ...string) (*Logger, error) {
+	return NewLoggerWithErr(out, nil, level...)
+}
+
+// NewLoggerWithErr creates a new logger for given out, err out, level, and the
+// err out can be nil, and the level is optional.
+func NewLoggerWithErr(out, errOut io.Writer, level ...string) (*Logger, error) {
 	if out == nil {
 		return nil, errors.New(`must specify the output for logger`)
 	}
@@ -273,7 +330,12 @@ func NewLogger(out io.Writer, level ...string) (*Logger, error) {
 			Hooks:     log.LevelHooks{},
 			Level:     log.WarnLevel,
 		},
-		out: out,
+		out:    out,
+		errOut: errOut,
+	}
+
+	if errOut != nil {
+		l.origLogger.Hooks.Add(NewErrorHook(l.errOut))
 	}
 
 	if len(level) == 1 {
@@ -284,4 +346,13 @@ func NewLogger(out io.Writer, level ...string) (*Logger, error) {
 	}
 
 	return l, nil
+}
+
+func checkDir(dir string) error {
+	if info, err := os.Stat(dir); err != nil {
+		return fmt.Errorf(`directory not exists: %s`, dir)
+	} else if !info.IsDir() {
+		return fmt.Errorf(`path is not directory: %s`, dir)
+	}
+	return nil
 }
