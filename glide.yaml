@@ -15,7 +15,7 @@ import:
   version: a5b47d31c556af34a302ce5d659e6fea44d90de0
   repo:    https://github.com/go-yaml/yaml.git
 # Logging
-- package: github.com/Sirupsen/logrus
+- package: github.com/sirupsen/logrus
   version: v0.11.0
 # GoLang
 - package: golang.org/x/sys
