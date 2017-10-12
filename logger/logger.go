@@ -12,7 +12,7 @@ import (
 	"syscall"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/pengsrc/go-shared/convert"
 	"github.com/pengsrc/go-shared/reopen"
