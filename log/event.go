@@ -384,7 +384,11 @@ func (e *Event) write(format string, v ...interface{}) {
 
 	// Format print message.
 	if format != "" {
-		fmt.Fprintf(buf, format, v...)
+		if len(v) == 0 {
+			fmt.Fprint(buf, format)
+		} else {
+			fmt.Fprintf(buf, format, v...)
+		}
 	} else {
 		fmt.Fprint(buf, v...)
 	}
