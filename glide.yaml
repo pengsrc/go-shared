@@ -5,10 +5,6 @@ import:
   version: 4ff8c001ce4cc464e644b922325097228fce14d8
   repo:    https://github.com/golang/sys.git
 
-# Logging
-- package: github.com/sirupsen/logrus
-  version: v0.11.0
-
 # Test
 - package: github.com/stretchr/testify
   version: v1.1.4
