@@ -15,6 +15,7 @@ help:
 	@echo "Please use \`make <target>\` where <target> is one of"
 	@echo "  check         to vet and lint"
 	@echo "  test          to run test"
+	@echo "  test-benchmark to run test with benchmark"
 	@echo "  test-coverage to run test with coverage"
 
 .PHONY: check
@@ -44,6 +45,12 @@ lint:
 test:
 	@echo "Run test"
 	@go test -v ${PKGS_TO_CHECK}
+	@echo "Done"
+
+.PHONY: test-benchmark
+test-benchmark:
+	@echo "Running test with benchmark..."
+	@go test -v -bench=. -benchmem ${PKGS_TO_CHECK}
 	@echo "Done"
 
 .PHONY: test-coverage
