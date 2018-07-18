@@ -13,32 +13,32 @@ type ContextFreeLogger struct {
 
 // Fatal logs a message with severity FATAL followed by a call to os.Exit(1).
 func (l *ContextFreeLogger) Fatal(v ...interface{}) {
-	l.Logger.event(l.ctx, FatalLevel).write("", v...)
+	l.Logger.event(l.ctx, FatalLevel).write("%v", v...)
 }
 
 // Panic logs a message with severity PANIC followed by a call to panic().
 func (l *ContextFreeLogger) Panic(v ...interface{}) {
-	l.Logger.event(l.ctx, PanicLevel).write("", v...)
+	l.Logger.event(l.ctx, PanicLevel).write("%v", v...)
 }
 
 // Error logs a message with severity ERROR.
 func (l *ContextFreeLogger) Error(v ...interface{}) {
-	l.Logger.event(l.ctx, ErrorLevel).write("", v...)
+	l.Logger.event(l.ctx, ErrorLevel).write("%v", v...)
 }
 
 // Warn logs a message with severity WARN.
 func (l *ContextFreeLogger) Warn(v ...interface{}) {
-	l.Logger.event(l.ctx, WarnLevel).write("", v...)
+	l.Logger.event(l.ctx, WarnLevel).write("%v", v...)
 }
 
 // Info logs a message with severity INFO.
 func (l *ContextFreeLogger) Info(v ...interface{}) {
-	l.Logger.event(l.ctx, InfoLevel).write("", v...)
+	l.Logger.event(l.ctx, InfoLevel).write("%v", v...)
 }
 
 // Debug logs a message with severity DEBUG.
 func (l *ContextFreeLogger) Debug(v ...interface{}) {
-	l.Logger.event(l.ctx, DebugLevel).write("", v...)
+	l.Logger.event(l.ctx, DebugLevel).write("%v", v...)
 }
 
 // Fatalf logs a message with severity FATAL in format followed by a call to
