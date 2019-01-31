@@ -1,9 +1,8 @@
 language: go
 go:
-  - "master"
+  - "1.11"
   - "1.10"
   - "1.9"
-  - "1.8"
 
 cache:
   directories:
@@ -28,7 +27,7 @@ before_install:
   - /usr/local/bin/glide --version
 
 install:
-  - go get -u github.com/golang/lint/golint
+  - go get -u golang.org/x/lint/golint
   - glide install
 
 script:
