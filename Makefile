@@ -2,8 +2,8 @@ SHELL := /bin/bash
 
 PACKAGE_NAME="github.com/pengsrc/go-shared"
 
-DIRS_TO_CHECK=$(shell ls -d */ | grep -v "vendor")
-PKGS_TO_CHECK=$(shell go list ./... | grep -vE "/vendor")
+DIRS_TO_CHECK=$(shell ls -d ./*/ | grep -v "scripts")
+PKGS_TO_CHECK=$(shell go list ./...)
 
 ifneq (${PKG},)
 	DIRS_TO_CHECK="./${PKG}"
@@ -29,7 +29,7 @@ format:
 .PHONY: vet
 vet:
 	@echo "Go tool vet, skipping vendor packages"
-	@go tool vet -all ${DIRS_TO_CHECK}
+	@go vet -all ${DIRS_TO_CHECK}
 	@echo "Done"
 
 .PHONY: lint
