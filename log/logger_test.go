@@ -41,7 +41,7 @@ func TestNewLogger(t *testing.T) {
 	// Test logging for context.
 	type contextKey string
 	const traceID contextKey = "trace_id"
-	ctx := context.WithValue(nil, traceID, "60b725f10c9c85c70d97880dfe8191b3")
+	ctx := context.WithValue(context.Background(), traceID, "60b725f10c9c85c70d97880dfe8191b3")
 
 	l.SetInterestContextKeys([]interface{}{traceID})
 
